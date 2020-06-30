@@ -5,23 +5,24 @@ set(CMAKE_CXX_STANDARD 11)
 file(GLOB SOURCES "${CMAKE_CURRENT_LIST_DIR}/include/*.cpp")
 file(GLOB INCLUDES "${CMAKE_CURRENT_LIST_DIR}/include/*.h")
 
-add_library(${PROJECT_NAME} OBJECT ${SOURCES})
+if (LIBOWT_SHARED)
+   add_library(${PROJECT_NAME} SHARED ${SOURCES})
+else()
+   add_library(${PROJECT_NAME} STATIC ${SOURCES})
+endif()
+
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
-add_library(${PROJECT_NAME}_shared SHARED $<TARGET_OBJECTS:${PROJECT_NAME}>)
-add_library(${PROJECT_NAME}_static STATIC $<TARGET_OBJECTS:${PROJECT_NAME}>)
 set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION 1)
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/bus.h)
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/device.h)
-set_target_properties(${PROJECT_NAME}_shared PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
-set_target_properties(${PROJECT_NAME}_static PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
-install(TARGETS ${PROJECT_NAME}_static DESTINATION lib)
-install(TARGETS ${PROJECT_NAME}_shared DESTINATION lib)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 
 if (BUILD_TEST)
    file(GLOB TEST_SOURCES "tests/*.cpp")
-   add_executable(${PROJECT_NAME}_test ${SOURCES} ${TEST_SOURCES})
+   add_executable(${PROJECT_NAME}_test ${PROJECT_NAME} ${TEST_SOURCES})
    include_directories(${PROJECT_NAME}_test "include")
 
-   target_link_libraries (${PROJECT_NAME}_test ${PROJECT_NAME}_static)
+   target_link_libraries (${PROJECT_NAME}_test ${PROJECT_NAME})
 endif()
 
