@@ -34,6 +34,7 @@ std::vector<Device> Bus::devices()
 
     std::vector<Device> devices;
     if (bus == NULL) {
+        closedir(bus);
         return devices;
     }
 
@@ -54,5 +55,6 @@ std::vector<Device> Bus::devices()
         }
     }
 
+    closedir(bus);
     return devices;
 } 
