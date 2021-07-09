@@ -13,8 +13,8 @@ endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
 set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION 1)
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/bus.h)
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/device.h)
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/ow_bus.h)
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/ow_device.h)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 
